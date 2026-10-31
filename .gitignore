@@ -218,3 +218,11 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+Project-specific ignores
+# Add project-specific ignore rules here. For example:
+# Ignore a specific file
+# myfile.txt
+# Ignore a specific directory
+# mydirectory/  
+Project_Specs.md

@@ -1,0 +1,82 @@
+[
+  {
+    "case_id": "dep-001",
+    "ticket": "After upgrading a Java dependency, the application fails to start with a NoClassDefFoundError.",
+    "expected_category": "dependency_or_security",
+    "expected_sources": ["java_dependencies.md"],
+    "answerable": true,
+    "clarification_expected": true
+  },
+  {
+    "case_id": "dep-002",
+    "ticket": "Snyk reports a critical vulnerability in a Java dependency library and we need to understand the safe upgrade path.",
+    "expected_category": "dependency_or_security",
+    "expected_sources": ["java_dependencies.md"],
+    "answerable": true,
+    "clarification_expected": true
+  },
+  {
+    "case_id": "api-001",
+    "ticket": "Our REST API returns HTTP 500 for valid JSON requests after a third-party integration change.",
+    "expected_category": "api_or_integration",
+    "expected_sources": ["api_testing.md"],
+    "answerable": true,
+    "clarification_expected": true
+  },
+  {
+    "case_id": "api-002",
+    "ticket": "The API integration endpoint has intermittent timeout and rate limit errors.",
+    "expected_category": "api_or_integration",
+    "expected_sources": ["api_testing.md"],
+    "answerable": true,
+    "clarification_expected": true
+  },
+  {
+    "case_id": "runtime-001",
+    "ticket": "The Kubernetes pod enters a crash loop immediately after the production deployment.",
+    "expected_category": "deployment_or_runtime",
+    "expected_sources": ["kubernetes-runtime.md", "deployment_issues.md"],
+    "answerable": true,
+    "clarification_expected": true
+  },
+  {
+    "case_id": "runtime-002",
+    "ticket": "The service is unavailable after a new container rollout and repeatedly restarts during startup.",
+    "expected_category": "deployment_or_runtime",
+    "expected_sources": ["deployment_issues.md", "kubernetes-runtime.md"],
+    "answerable": true,
+    "clarification_expected": true
+  },
+  {
+    "case_id": "db-001",
+    "ticket": "Database connections are exhausted and SQL queries are timing out after a migration.",
+    "expected_category": "database",
+    "expected_sources": ["database-troubleshooting.md"],
+    "answerable": true,
+    "clarification_expected": true
+  },
+  {
+    "case_id": "auth-001",
+    "ticket": "Users receive 401 Unauthorized after token refresh even though their sessions are still valid.",
+    "expected_category": "access_or_authentication",
+    "expected_sources": ["authentication.md", "access-auth-tickets.md"],
+    "answerable": true,
+    "clarification_expected": true
+  },
+  {
+    "case_id": "ambiguous-001",
+    "ticket": "The application is not working correctly and users are reporting problems.",
+    "expected_category": "other",
+    "expected_sources": [],
+    "answerable": false,
+    "clarification_expected": true
+  },
+  {
+    "case_id": "no-answer-001",
+    "ticket": "The office printer displays a flashing purple moon icon and refuses to print boarding passes.",
+    "expected_category": "other",
+    "expected_sources": [],
+    "answerable": false,
+    "clarification_expected": true
+  }
+]
