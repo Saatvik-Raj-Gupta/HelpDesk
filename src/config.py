@@ -27,6 +27,7 @@ class Settings(BaseModel):
         default="sentence-transformers/all-MiniLM-L6-v2",
         alias="EMBEDDING_MODEL",
     )
+    retrieval_score_threshold: float = Field(default=0.45, alias="RETRIEVAL_SCORE_THRESHOLD")
     gemini_api_key: str | None = Field(default=None, alias="GEMINI_API_KEY")
     knowledge_base_dir: str = Field(
         default=str(PROJECT_ROOT / "data" / "knowledge_base"),
@@ -70,6 +71,13 @@ class Settings(BaseModel):
             raise ValueError("STREAMLIT_SERVER_PORT must be between 1 and 65535")
         return value
 
+    @field_validator("retrieval_score_threshold")
+    @classmethod
+    def validate_retrieval_score_threshold(cls, value: float) -> float:
+        if not 0.0 <= value <= 1.0:
+            raise ValueError("RETRIEVAL_SCORE_THRESHOLD must be between 0 and 1")
+        return value
+
     @field_validator("gemini_api_key", mode="before")
     @classmethod
     def validate_gemini_api_key(cls, value: Any) -> str | None:
@@ -95,6 +103,7 @@ def load_settings() -> Settings:
         "LLM_PROVIDER": _env_value("LLM_PROVIDER") or "gemini",
         "GEMINI_MODEL": _env_value("GEMINI_MODEL") or "gemini-3.8-flash",
         "EMBEDDING_MODEL": _env_value("EMBEDDING_MODEL") or "sentence-transformers/all-MiniLM-L6-v2",
+        "RETRIEVAL_SCORE_THRESHOLD": _env_value("RETRIEVAL_SCORE_THRESHOLD") or 0.45,
         "GEMINI_API_KEY": _env_value("GEMINI_API_KEY"),
         "KNOWLEDGE_BASE_DIR": _env_value("KNOWLEDGE_BASE_DIR") or str(PROJECT_ROOT / "data" / "knowledge_base"),
         "STORAGE_DIR": _env_value("STORAGE_DIR") or str(PROJECT_ROOT / "storage" / "chroma"),

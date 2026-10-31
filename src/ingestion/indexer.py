@@ -44,6 +44,9 @@ def index_knowledge_base(settings: Settings, *, force: bool = False) -> IndexRes
     started_at = time.perf_counter()
     documents, errors = load_documents(settings.knowledge_base_dir)
     chunks = chunk_documents(documents, chunk_size=500, chunk_overlap=80)
+    removed_chunks = store.remove_documents_not_in({document.doc_id for document in documents})
+    if removed_chunks:
+        logger.info("Removed stale document chunks: chunks=%d", removed_chunks)
     indexed_chunks = store.upsert_chunks(chunks)
     elapsed_ms = (time.perf_counter() - started_at) * 1000
     logger.info(

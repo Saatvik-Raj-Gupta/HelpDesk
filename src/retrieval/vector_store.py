@@ -79,13 +79,31 @@ class VectorStore:
         logger.info("Document indexing complete: chunks=%d elapsed_ms=%.1f", len(chunks), elapsed_ms)
         return len(chunks)
 
+    def remove_documents_not_in(self, active_doc_ids: set[str]) -> int:
+        existing = self.collection.get(include=["metadatas"])
+        ids = existing.get("ids", [])
+        metadatas = existing.get("metadatas", [])
+        stale_ids = [
+            chunk_id
+            for chunk_id, metadata in zip(ids, metadatas)
+            if metadata and metadata.get("doc_id") not in active_doc_ids
+        ]
+        if stale_ids:
+            self.collection.delete(ids=stale_ids)
+        return len(stale_ids)
+
     def count(self) -> int:
         try:
             return self.collection.count()
         except Exception:  # pragma: no cover - runtime safeguard
             return 0
 
-    def query(self, query: str, top_k: int = 4) -> list[dict[str, Any]]:
+    def query(
+        self,
+        query: str,
+        top_k: int = 4,
+        relevance_threshold: float | None = None,
+    ) -> list[dict[str, Any]]:
         query_vector = self.embed(query)
         results = self.collection.query(
             query_embeddings=[query_vector],
@@ -100,6 +118,8 @@ class VectorStore:
 
         for document, metadata, distance in zip(documents, metadatas, distances):
             score = max(0.0, 1.0 - float(distance))
+            if relevance_threshold is not None and score < relevance_threshold:
+                continue
             hits.append(
                 {
                     "source_name": metadata.get("source_name", "unknown"),
